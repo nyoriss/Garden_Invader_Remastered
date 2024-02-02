@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://dquuofe5umuu8"]
+
+[ext_resource type="Script" path="res://src/levels/game_level.gd" id="1_ox46r"]
+[ext_resource type="PackedScene" uid="uid://ceiyjrt40vdcg" path="res://src/objects/player_rabbit.tscn" id="1_pcjgr"]
+[ext_resource type="PackedScene" uid="uid://dapa5ld4837ha" path="res://src/objects/Projectiles/carrot.tscn" id="3_u80fg"]
+[ext_resource type="PackedScene" uid="uid://ounh5wbjcqcx" path="res://src/objects/bird.tscn" id="4_7sxw3"]
+
+[node name="Game_level" type="Node2D"]
+script = ExtResource("1_ox46r")
+
+[node name="Player_Rabbit" parent="." instance=ExtResource("1_pcjgr")]
+position = Vector2(154, 113)
+
+[node name="Carrot" parent="." instance=ExtResource("3_u80fg")]
+position = Vector2(-15, 2)
+
+[node name="Bird" parent="." instance=ExtResource("4_7sxw3")]
+position = Vector2(73, 43)

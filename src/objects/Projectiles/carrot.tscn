@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dapa5ld4837ha"]
+
+[ext_resource type="Script" path="res://src/objects/Projectiles/Carrot.gd" id="1_k6f0i"]
+[ext_resource type="Texture2D" uid="uid://comyd81d7u2s6" path="res://asset/sprite/carotte_tir2.png" id="2_nw6m0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_00r44"]
+size = Vector2(5, 14)
+
+[node name="Carrot" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_k6f0i")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_nw6m0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_00r44")
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

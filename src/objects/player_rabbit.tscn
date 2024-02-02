@@ -1,0 +1,111 @@
+[gd_scene load_steps=22 format=3 uid="uid://ceiyjrt40vdcg"]
+
+[ext_resource type="Script" path="res://src/objects/player_rabbit.gd" id="1_mikqe"]
+[ext_resource type="Texture2D" uid="uid://behmwm4cecb2e" path="res://asset/sprite/rabbit/rabbit_sprites.png" id="2_yqwld"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bjcow"]
+size = Vector2(14, 16)
+
+[sub_resource type="Animation" id="Animation_yccu2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tkkbf"]
+_data = {
+"RESET": SubResource("Animation_yccu2")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gh81h"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_k6sqw"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_gh81h")
+blend_point_0/pos = Vector2(0, 0)
+snap = Vector2(0.01, 0.01)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dtvku"]
+animation = &"idle_shoot"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xcs21"]
+animation = &"walk_shoot"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ymhtb"]
+animation = &"walk_shoot"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_v4psd"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_dtvku")
+blend_point_0/pos = Vector2(0, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_xcs21")
+blend_point_1/pos = Vector2(-1, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_ymhtb")
+blend_point_2/pos = Vector2(1, 0)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2qa8w"]
+animation = &"walk"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_55fpt"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_2qa8w")
+blend_point_0/pos = Vector2(0, 0)
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xvv1p"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ra0ku"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vileq"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d6107"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c8mma"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_awb03"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8wrhv"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ihwub"]
+states/Idle/node = SubResource("AnimationNodeBlendSpace2D_k6sqw")
+states/Idle/position = Vector2(338, 100)
+states/Shooting/node = SubResource("AnimationNodeBlendSpace2D_v4psd")
+states/Shooting/position = Vector2(429, 197)
+states/Walk/node = SubResource("AnimationNodeBlendSpace2D_55fpt")
+states/Walk/position = Vector2(513, 100)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_xvv1p"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_ra0ku"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_vileq"), "Idle", "Shooting", SubResource("AnimationNodeStateMachineTransition_d6107"), "Shooting", "Idle", SubResource("AnimationNodeStateMachineTransition_c8mma"), "Walk", "Shooting", SubResource("AnimationNodeStateMachineTransition_awb03"), "Shooting", "Walk", SubResource("AnimationNodeStateMachineTransition_8wrhv")]
+
+[node name="PlayerRabbit" type="CharacterBody2D"]
+collision_mask = 24
+script = ExtResource("1_mikqe")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_yqwld")
+hframes = 3
+vframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bjcow")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_tkkbf")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_tkkbf")
+}
+tree_root = SubResource("AnimationNodeStateMachine_ihwub")
+advance_expression_base_node = NodePath("../AnimationPlayer")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Idle/blend_position = Vector2(0.0446248, -0.111111)
+parameters/Shooting/blend_position = Vector2(0, 0)
+parameters/Walk/blend_position = Vector2(0, 0)

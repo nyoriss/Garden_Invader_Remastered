@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://dc7t4d78h68vt"]
+
+[ext_resource type="Script" path="res://src/levels/losing_screen.gd" id="1_jlewp"]
+[ext_resource type="Texture2D" uid="uid://dagbixj4m36d3" path="res://asset/victoire.png" id="2_qa2nt"]
+
+[node name="winning_screen" type="Node2D"]
+script = ExtResource("1_jlewp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -15)
+scale = Vector2(0.38, 0.38)
+texture = ExtResource("2_qa2nt")
+centered = false
+
+[node name="buttons_VBoxContainer" type="HBoxContainer" parent="."]
+offset_left = 49.0
+offset_top = 123.0
+offset_right = 212.0
+offset_bottom = 152.0
+
+[node name="try_again_button" type="Button" parent="buttons_VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Recommencer"
+
+[node name="main_menu_button" type="Button" parent="buttons_VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Menu principal"
+
+[connection signal="pressed" from="buttons_VBoxContainer/try_again_button" to="." method="_on_try_again_button_pressed"]
+[connection signal="pressed" from="buttons_VBoxContainer/main_menu_button" to="." method="_on_main_menu_button_pressed"]

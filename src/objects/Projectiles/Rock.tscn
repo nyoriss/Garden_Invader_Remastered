@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dbhiqwf785yag"]
+
+[ext_resource type="Script" path="res://src/objects/Projectiles/Rock.gd" id="1_8bga8"]
+[ext_resource type="Texture2D" uid="uid://bts8jsk0oa1d" path="res://asset/sprite/projectiles/enemies/Rock/longRock.png" id="2_if4xy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_00r44"]
+size = Vector2(6.5125, 4.43166)
+
+[node name="Rock" type="Area2D"]
+collision_layer = 8
+collision_mask = 65
+script = ExtResource("1_8bga8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_if4xy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1.07, 1.07)
+shape = SubResource("RectangleShape2D_00r44")
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

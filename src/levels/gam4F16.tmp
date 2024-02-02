@@ -1,0 +1,103 @@
+[gd_scene load_steps=15 format=3 uid="uid://dquuofe5umuu8"]
+
+[ext_resource type="Script" path="res://src/levels/game_level.gd" id="1_ox46r"]
+[ext_resource type="PackedScene" uid="uid://ceiyjrt40vdcg" path="res://src/objects/player_rabbit.tscn" id="1_pcjgr"]
+[ext_resource type="Texture2D" uid="uid://cbln5ujn85fwt" path="res://asset/game.png" id="2_tsafg"]
+[ext_resource type="PackedScene" uid="uid://dapa5ld4837ha" path="res://src/objects/Projectiles/carrot.tscn" id="3_u80fg"]
+[ext_resource type="PackedScene" uid="uid://ounh5wbjcqcx" path="res://src/objects/bird.tscn" id="4_7sxw3"]
+[ext_resource type="Script" path="res://src/levels/LoseLine.gd" id="6_doduh"]
+[ext_resource type="Script" path="res://src/levels/ProjectileDeleteLine.gd" id="7_824ut"]
+[ext_resource type="Script" path="res://src/levels/interface/Head-Up_Display.gd" id="8_50rqb"]
+[ext_resource type="Texture2D" uid="uid://ea8q8s7s7qvt" path="res://asset/sprite/rabbit/LifePoint/HPIcon.png" id="9_bud43"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8s7q7"]
+size = Vector2(10, 20)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_7br2q"]
+a = Vector2(288, 140)
+b = Vector2(0, 140)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_hwijp"]
+a = Vector2(248.25, -1)
+b = Vector2(-39.75, -2)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fi27j"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_s2p4t"]
+line_spacing = 1.0
+font_size = 10
+
+[node name="Game_level" type="Node2D"]
+script = ExtResource("1_ox46r")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(0, -20)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_tsafg")
+centered = false
+
+[node name="Player_Rabbit" parent="." instance=ExtResource("1_pcjgr")]
+position = Vector2(50, 150)
+
+[node name="Carrot" parent="." instance=ExtResource("3_u80fg")]
+visible = false
+position = Vector2(-33, 7)
+
+[node name="Bird" parent="." instance=ExtResource("4_7sxw3")]
+visible = false
+position = Vector2(-19, 3)
+
+[node name="BorderWalls" type="StaticBody2D" parent="."]
+position = Vector2(5, 150)
+collision_layer = 16
+
+[node name="LeftWall" type="CollisionShape2D" parent="BorderWalls"]
+shape = SubResource("RectangleShape2D_8s7q7")
+
+[node name="RightWall" type="CollisionShape2D" parent="BorderWalls"]
+position = Vector2(278, 0)
+shape = SubResource("RectangleShape2D_8s7q7")
+
+[node name="LoseLine" type="StaticBody2D" parent="."]
+collision_layer = 32
+collision_mask = 2
+script = ExtResource("6_doduh")
+
+[node name="Area2D" type="Area2D" parent="LoseLine"]
+collision_layer = 32
+collision_mask = 2
+
+[node name="LoseLineSegment" type="CollisionShape2D" parent="LoseLine/Area2D"]
+shape = SubResource("SegmentShape2D_7br2q")
+
+[node name="ProjectileDeleteLine" type="StaticBody2D" parent="."]
+collision_layer = 64
+collision_mask = 12
+script = ExtResource("7_824ut")
+
+[node name="DeleteSegment" type="CollisionShape2D" parent="ProjectileDeleteLine"]
+position = Vector2(40, 170)
+shape = SubResource("SegmentShape2D_hwijp")
+
+[node name="Head-Up_Display" type="Panel" parent="."]
+offset_left = 1.0
+offset_top = -20.0
+offset_right = 308.0
+offset_bottom = 210.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_fi27j")
+script = ExtResource("8_50rqb")
+
+[node name="Health_Label" type="Label" parent="Head-Up_Display"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 183.0
+offset_right = 45.0
+offset_bottom = 197.0
+text = "X 1"
+label_settings = SubResource("LabelSettings_s2p4t")
+
+[node name="Health_Sprite2D" type="Sprite2D" parent="Head-Up_Display"]
+position = Vector2(20, 190)
+texture = ExtResource("9_bud43")
+
+[connection signal="body_shape_entered" from="LoseLine/Area2D" to="LoseLine" method="_on_area_2d_body_shape_entered"]

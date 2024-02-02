@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://dquuofe5umuu8"]
+
+[ext_resource type="Script" path="res://src/levels/game_level.gd" id="1_ox46r"]
+[ext_resource type="PackedScene" uid="uid://ceiyjrt40vdcg" path="res://src/objects/player_rabbit.tscn" id="1_pcjgr"]
+[ext_resource type="Texture2D" uid="uid://cbln5ujn85fwt" path="res://asset/game.png" id="2_tsafg"]
+[ext_resource type="PackedScene" uid="uid://dapa5ld4837ha" path="res://src/objects/Projectiles/carrot.tscn" id="3_u80fg"]
+[ext_resource type="PackedScene" uid="uid://ounh5wbjcqcx" path="res://src/objects/bird.tscn" id="4_7sxw3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8s7q7"]
+size = Vector2(10, 20)
+
+[node name="Game_level" type="Node2D"]
+script = ExtResource("1_ox46r")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(0, -20)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_tsafg")
+centered = false
+
+[node name="Player_Rabbit" parent="." instance=ExtResource("1_pcjgr")]
+position = Vector2(50, 150)
+
+[node name="Carrot" parent="." instance=ExtResource("3_u80fg")]
+visible = false
+position = Vector2(-33, 7)
+
+[node name="Bird" parent="." instance=ExtResource("4_7sxw3")]
+visible = false
+position = Vector2(-19, 3)
+
+[node name="BorderWalls" type="StaticBody2D" parent="."]
+position = Vector2(5, 150)
+collision_layer = 16
+
+[node name="LeftWall" type="CollisionShape2D" parent="BorderWalls"]
+shape = SubResource("RectangleShape2D_8s7q7")
+
+[node name="RightWall" type="CollisionShape2D" parent="BorderWalls"]
+position = Vector2(278, 0)
+shape = SubResource("RectangleShape2D_8s7q7")
