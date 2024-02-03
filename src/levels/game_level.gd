@@ -1,11 +1,18 @@
 extends Node2D
+
 # Birds
 var birdTypes = []
 var birds = [] #liste d'oiseaux
+var birdProjectiles = []
 var birdClass = preload("res://src/objects/bird.tscn")
 var birdObject = Bird.new()
+
+#Player
+var playerProjectiles = []
+
 # Assets
 var backgroundImage = preload("res://asset/game.png")
+
 # Game difficulty
 var pie_number : int
 var corbo_number : int
@@ -19,7 +26,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if(GlobalScript.game_launching):
-		print("ici")
 		initializeGame()
 
 	if(!GlobalScript.game_paused):
@@ -33,7 +39,6 @@ func spawnBird(birdPosition : Vector2, birdType : String) :
 	var birdInstanciated = birdClass.instantiate()
 	#TODO méthode directement dans bird
 	birdInstanciated.initializeBird(birdType, birdPosition)
-	get_parent().add_child(birdInstanciated)
 	return birdInstanciated
 
 func initializeEnemies():
@@ -89,13 +94,41 @@ func winGame():
 	GlobalScript.game_paused = true
 	get_tree().change_scene_to_file("res://src/levels/winning_screen.tscn")
 
+# fonction that add a projectile to the bird projectiles list 
+func addBirdProjectile(projectile):
+	birdProjectiles.append(projectile)
+
+# fonction that add a projectile to the player projectiles list 
+func addPlayerProjectile(projectile):
+	playerProjectiles.append(projectile)
+
+# fonction that delete a projectile from the bird projectiles list 
+func deleteBirdProjectile(projectile):
+	birdProjectiles.erase(projectile)
+	projectile.queue_free()
+
+# fonction that delete a projectile from the player projectiles list 
+func deletePlayerProjectile(projectile):
+	playerProjectiles.erase(projectile)
+	projectile.queue_free()
+
+# fonction that delete a bird from the bird list 
 func deleteBird(bird : Bird):
 	birds.erase(bird)
-
+	bird.queue_free()
 
 func initializeGame():
 	GlobalScript.gameTick = 0
 	GlobalScript.game_launching = false
+	for bird in birds :
+		deleteBird(bird)
+	
+	for projectile in birdProjectiles:
+		deleteBirdProjectile(projectile)
+
+	for projectile in playerProjectiles:
+		deletePlayerProjectile(projectile)
+
 	if(GlobalScript.current_difficulty == GlobalScript.GAME_HARD):
 		pie_number = 10
 		corbo_number = 10
